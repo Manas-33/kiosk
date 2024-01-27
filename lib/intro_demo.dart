@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:kiosk/aadhar_entry_page.dart';
+import 'package:kiosk/fingerprint_capture_page.dart';
 import 'package:kiosk/home_page.dart';
 
 class OnBoardingPage extends StatefulWidget {
@@ -13,10 +14,14 @@ class OnBoardingPage extends StatefulWidget {
 
 class OnBoardingPageState extends State<OnBoardingPage> {
   final introKey = GlobalKey<IntroductionScreenState>();
+  final TextEditingController aadharController = TextEditingController();
 
   void _onIntroEnd(context) {
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) => AadharEntryPage()),
+      MaterialPageRoute(
+          builder: (_) => FingerprintCapturePage(
+                aadharNumber: "5646",
+              )),
     );
   }
 
@@ -48,16 +53,12 @@ class OnBoardingPageState extends State<OnBoardingPage> {
 
     return IntroductionScreen(
       key: introKey,
-      
+
       allowImplicitScrolling: true,
-     
-      
-      
-      
+
       pages: [
-      
         PageViewModel(
-          title: "Welcome to kiosk",
+          title: "Welcome to the kiosk",
           body: "Your Health, Your Kiosk: Fast, Convenient, Reliable.",
           image: Center(
             child: Image.network(
@@ -68,40 +69,46 @@ class OnBoardingPageState extends State<OnBoardingPage> {
             pageColor: Color.fromARGB(255, 105, 224, 113),
           ),
         ),
+
         PageViewModel(
-          title: "Welcome to kiosk",
-          body: "Your Health, Your Kiosk: Fast, Convenient, Reliable.",
-          image: Center(
-            child: Image.network(
-                "https://icon-library.com/images/facility-icon/facility-icon-18.jpg",
-                height: 175.0),
+          title: "",
+          body: "",
+          image: Expanded(
+            child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+              Text(
+                "Please Enter your Aadhar number",
+                style: TextStyle(fontSize: 28.0, fontWeight: FontWeight.w700),
+              ),
+              AadharNumber(aadharController: aadharController)
+            ]),
           ),
           decoration: const PageDecoration(
             pageColor: Color.fromARGB(255, 105, 224, 113),
           ),
         ),
-        PageViewModel(
-          title: "Welcome to kiosk",
-          body: "Your Health, Your Kiosk: Fast, Convenient, Reliable.",
-          image: Center(
-            child: Image.network(
-                "https://cdn.dribbble.com/users/1549225/screenshots/4861075/doctor.png",
-                height: 175.0),
-          ),
-          decoration: const PageDecoration(
-            pageColor: Color.fromARGB(255, 105, 224, 113),
-          ),
-        ),
+
+        //   PageViewModel(
+        //     title: "Welcome to kiosk",
+        //     body: "Your Health, Your Kiosk: Fast, Convenient, Reliable.",
+        //     image: Center(
+        //       child: Image.network(
+        //           "https://cdn.dribbble.com/users/1549225/screenshots/4861075/doctor.png",
+        //           height: 175.0),
+        //     ),
+        //     decoration: const PageDecoration(
+        //       pageColor: Color.fromARGB(255, 105, 224, 113),
+        //     ),
+        //   ),
       ],
       onDone: () => _onIntroEnd(context),
-      onSkip: () => _onIntroEnd(context), // You can override onSkip callback
-      showSkipButton: true,
+      // onSkip: () => _onIntroEnd(context), // You can override onSkip callback
+      showSkipButton: false,
       skipOrBackFlex: 0,
       nextFlex: 0,
       showBackButton: false,
       //rtl: true, // Display as right-to-left
       back: const Icon(Icons.arrow_back),
-      skip: const Text('Skip', style: TextStyle(fontWeight: FontWeight.w600)),
+      // skip: const Text('Skip', style: TextStyle(fontWeight: FontWeight.w600)),
       next: const Icon(Icons.arrow_forward),
       done: const Text('Done', style: TextStyle(fontWeight: FontWeight.w600)),
       curve: Curves.fastLinearToSlowEaseIn,
@@ -117,7 +124,6 @@ class OnBoardingPageState extends State<OnBoardingPage> {
           borderRadius: BorderRadius.all(Radius.circular(25.0)),
         ),
       ),
-      
     );
   }
 }
